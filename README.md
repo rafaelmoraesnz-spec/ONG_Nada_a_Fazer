@@ -74,9 +74,33 @@ Outra opção é a extensão **Live Server** do VS Code.
 | Telefone | `99-99999-9999` |
 | CPF | `000.000.000-00` |
 
+## Fluxo de branches (GitFlow)
+
+| Branch | Função |
+|---|---|
+| `main` | Versão publicada. Cada versão recebe uma tag (`v1.0.0`, `v1.1.0`…). |
+| `develop` | Desenvolvimento do dia a dia. Reúne as funcionalidades concluídas. |
+| `feature/*` | Uma funcionalidade ou correção. Sai da `develop` e volta para ela por *pull request*. |
+| `release/*` | Preparação de uma versão. Sai da `develop` e vai para a `main` e de volta para a `develop`. |
+| `hotfix/*` | Correção urgente em produção. Sai da `main` e volta para a `main` e para a `develop`. |
+
+```
+main     ●──────────────────────●  v1.0.0 ──────────────●  v1.1.0
+          \                    /  \                    /
+develop    ●────●────●────●───●────●────●────●────●───●
+                 \  /  \  /             \  /  \  /
+feature           ●      ●               ●      ●
+```
+
+### Gestão do trabalho no GitHub
+
+- **Issues:** cada bug ou tarefa é registrado como uma *issue* antes de começar.
+- **Milestones:** as issues de uma mesma versão ficam agrupadas num *milestone* com o nome da versão (por exemplo, `v1.1.0`).
+- **Pull requests:** toda branch entra na `develop` ou na `main` por *pull request*. A descrição do PR explica o motivo e a forma da alteração e fecha as issues relacionadas com `Closes #n`.
+
 ## Contribuindo
 
-O projeto segue o **GitFlow**. Leia o [CONTRIBUTING.md](CONTRIBUTING.md) antes de abrir uma branch.
+Leia o [CONTRIBUTING.md](CONTRIBUTING.md) antes de abrir uma branch. Ele traz os comandos de cada fluxo e o padrão de commits.
 
 ## Autor
 
