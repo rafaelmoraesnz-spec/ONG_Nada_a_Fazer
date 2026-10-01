@@ -1,0 +1,25 @@
+nav a {
+    margin-right: 12px;
+    padding: 8px 8px;
+    text-decoration: none;
+}
+
+nav a.ativo {
+    background: #eef7ee;
+    border-bottom: 2px solid rgb(128, 0, 102);
+}
+
+#missao article {
+    cursor: pointer;
+    padding: 8px 12px;
+}
+
+#missao article.ativo {
+    background: #eef7ee;
+    border-left: 4px solid green;
+}
+
+#cadastro label {
+    display: block;
+    margin-top: 8px;
+}
