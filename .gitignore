@@ -11,3 +11,7 @@ desktop.ini
 # Logs e temporários
 *.log
 *.tmp
+
+# Dependências e build
+node_modules/
+dist/
