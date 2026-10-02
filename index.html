@@ -47,7 +47,12 @@
     <template id="tpl-sobre">
         <section id="sobre">
             <h2>Quem somos</h2>
-            <figure> <img src="imagens/nada.jpg" alt="ONG - Nada a fazer" width="800" height="450">
+            <figure>
+                <!-- WebP para navegadores atuais; JPEG como alternativa -->
+                <picture>
+                    <source srcset="imagens/nada.webp" type="image/webp">
+                    <img src="imagens/nada.jpg" alt="ONG - Nada a fazer" width="800" height="450" decoding="async">
+                </picture>
             </figure>
             <p>A ONG Nada a fazer alimenta você a cada 6 meses</p>
         </section>

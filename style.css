@@ -180,3 +180,9 @@ nav a.ativo {
 #cadastro [aria-invalid="true"] {
     border: 2px solid var(--erro);
 }
+
+/* Imagens se ajustam à largura da tela no celular, sem distorcer */
+img {
+    max-width: 100%;
+    height: auto;
+}
