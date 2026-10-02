@@ -12,6 +12,9 @@ const rotas = {
 };
 
 
+// Evita roubar o foco no primeiro carregamento da página
+let navegou = false;
+
 function rotaAtual() {
     return location.hash.slice(1) || '/';
 }
@@ -25,8 +28,16 @@ function render() {
     document.title = `ONG Nada a fazer – ${rota ? rota.titulo : 'Não encontrada'}`;
 
     linksMenu.forEach(link => {
-        link.classList.toggle('ativo', link.getAttribute('href') === `#${caminho}`);
+        const ativo = link.getAttribute('href') === `#${caminho}`;
+        link.classList.toggle('ativo', ativo);
+        // Informa ao leitor de tela qual é a página atual
+        if (ativo) link.setAttribute('aria-current', 'page');
+        else link.removeAttribute('aria-current');
     });
+
+    // Ao trocar de página, leva o foco para o novo conteúdo
+    if (navegou) app.focus();
+    navegou = true;
 
     // if (caminho === '/teste') {
     //     const nome = 'Rafa';
@@ -68,6 +79,12 @@ function render() {
 
 window.addEventListener('hashchange', render);
 window.addEventListener('DOMContentLoaded', render);
+
+// "Pular para o conteúdo": foca o <main> sem alterar a rota do hash
+document.querySelector('.pular-conteudo').addEventListener('click', (evento) => {
+    evento.preventDefault();
+    app.focus();
+});
 
 
 app.addEventListener('click', (evento) => {

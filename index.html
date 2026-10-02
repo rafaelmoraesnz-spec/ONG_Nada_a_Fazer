@@ -10,9 +10,11 @@
 </head>
 
 <body>
+    <a href="#app" class="pular-conteudo">Pular para o conteúdo</a>
+
     <header>
         <h1>ONG Nada a fazer</h1>
-        <nav>
+        <nav aria-label="Menu principal">
             <a href="#/">Quem somos</a>
             <a href="#/missao">Missão</a>
             <a href="#/contato">Contato</a>
@@ -21,7 +23,12 @@
     </header>
 
 
-    <main id="app"></main>
+    <main id="app" tabindex="-1"></main>
+
+
+    <footer>
+        <p>&copy; 2026 ONG Nada a fazer – Campinas/SP</p>
+    </footer>
 
 
     <template id="tpl-sobre">
