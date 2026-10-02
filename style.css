@@ -39,6 +39,10 @@ nav a.ativo {
     padding: 8px 12px;
 }
 
+#missao article:focus-visible {
+    outline: 2px solid rgb(128, 0, 102);
+}
+
 #missao article.ativo {
     background: #eef7ee;
     border-left: 4px solid green;

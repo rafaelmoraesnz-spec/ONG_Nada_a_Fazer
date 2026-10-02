@@ -87,13 +87,29 @@ document.querySelector('.pular-conteudo').addEventListener('click', (evento) => 
 });
 
 
+// Destaca o artigo escolhido e informa o estado ao leitor de tela
+function destacarArtigo(artigo) {
+    app.querySelectorAll('#missao article').forEach(a => {
+        a.classList.remove('ativo');
+        a.setAttribute('aria-current', 'false');
+    });
+    artigo.classList.add('ativo');
+    artigo.setAttribute('aria-current', 'true');
+}
+
+// Permite destacar o artigo pelo teclado (Enter ou Espaço)
+app.addEventListener('keydown', (evento) => {
+    const artigo = evento.target.closest('#missao article');
+    if (artigo && (evento.key === 'Enter' || evento.key === ' ')) {
+        evento.preventDefault();
+        destacarArtigo(artigo);
+    }
+});
+
 app.addEventListener('click', (evento) => {
     // Destacar o artigo clicado
     const artigo = evento.target.closest('#missao article');
-    if (artigo) {
-        app.querySelectorAll('#missao article').forEach(a => a.classList.remove('ativo'));
-        artigo.classList.add('ativo');
-    }
+    if (artigo) destacarArtigo(artigo);
 
     const tel = evento.target.closest('a[href^="tel:"]');
     if (tel && !confirm('Deseja ligar para a ONG?')) {
