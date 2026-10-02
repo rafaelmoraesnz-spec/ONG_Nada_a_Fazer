@@ -54,7 +54,7 @@ function render() {
 
         // Modificando atributos
         imagem.setAttribute('alt', 'Foto da ONG');
-        titulo.style.backgroundColor = 'lightblue';
+        titulo.classList.add('titulo-destaque');
 
         // Recuperando dados
         const usuario = localStorage.getItem('usuario');
@@ -79,6 +79,34 @@ function render() {
 
 window.addEventListener('hashchange', render);
 window.addEventListener('DOMContentLoaded', render);
+
+// ===== Tema de cores (claro, escuro e alto contraste) =====
+const botoesTema = document.querySelectorAll('.temas button');
+const sistemaEscuro = window.matchMedia('(prefers-color-scheme: dark)');
+
+// Sem escolha salva, o tema segue o sistema operacional
+function temaAtual() {
+    return document.documentElement.dataset.tema || (sistemaEscuro.matches ? 'escuro' : 'claro');
+}
+
+// aria-pressed informa ao leitor de tela qual botão está ativo
+function atualizarBotoesTema() {
+    const tema = temaAtual();
+    botoesTema.forEach(botao => {
+        botao.setAttribute('aria-pressed', String(botao.dataset.tema === tema));
+    });
+}
+
+botoesTema.forEach(botao => {
+    botao.addEventListener('click', () => {
+        document.documentElement.dataset.tema = botao.dataset.tema;
+        try { localStorage.setItem('tema', botao.dataset.tema); } catch (e) { }
+        atualizarBotoesTema();
+    });
+});
+
+sistemaEscuro.addEventListener('change', atualizarBotoesTema);
+atualizarBotoesTema();
 
 // "Pular para o conteúdo": foca o <main> sem alterar a rota do hash
 document.querySelector('.pular-conteudo').addEventListener('click', (evento) => {
@@ -143,12 +171,11 @@ app.addEventListener('submit', (evento) => {
 
         if (!campo.checkValidity()) {
             primeiroErro ??= campo;
-            campo.style.border = '2px solid red';
 
+            // Cor e borda do erro vêm do CSS (.erro e [aria-invalid]), conforme o tema
             const msg = document.createElement('small');
             msg.className = 'erro';
             msg.id = `erro-${campo.id}`;
-            msg.style.color = 'red';
             msg.textContent = campo.value === '' ? 'Campo obrigatório' : 'Formato inválido';
             campo.after(msg);
 
@@ -156,7 +183,6 @@ app.addEventListener('submit', (evento) => {
             campo.setAttribute('aria-invalid', 'true');
             campo.setAttribute('aria-describedby', `${msg.id} ${dica}`.trim());
         } else {
-            campo.style.border = '';
             campo.removeAttribute('aria-invalid');
             if (dica) campo.setAttribute('aria-describedby', dica);
             else campo.removeAttribute('aria-describedby');
