@@ -1,3 +1,141 @@
+/* ===== Temas de cor =====
+   Todas as cores do site vêm destas variáveis. Cada tema só troca os valores.
+   - Claro: padrão.
+   - Escuro: escolhido no menu ou automático, se o sistema estiver em modo escuro.
+   - Alto contraste: fundo preto, texto branco e links amarelos.
+   Contraste de texto verificado em todos os temas (mínimo 4.5:1, WCAG 2.1 AA). */
+:root {
+    color-scheme: light;
+    --fundo: #ffffff;
+    --texto: #212529;
+    --texto-suave: #555555;
+    --link: #0a58ca;
+    --erro: #b00020;
+    --destaque-fundo: #eef7ee;
+    --titulo-fundo: #add8e6;
+    --acento: #800066;
+    --foco: #800066;
+    --borda: #cccccc;
+}
+
+/* Escuro automático: segue o sistema enquanto o usuário não escolhe um tema */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-tema]) {
+        color-scheme: dark;
+        --fundo: #121212;
+        --texto: #e9ecef;
+        --texto-suave: #b0b0b0;
+        --link: #8ab4f8;
+        --erro: #ff8a80;
+        --destaque-fundo: #1e3324;
+        --titulo-fundo: #1d4250;
+        --acento: #e39bd3;
+        --foco: #e39bd3;
+        --borda: #444444;
+    }
+}
+
+:root[data-tema="escuro"] {
+    color-scheme: dark;
+    --fundo: #121212;
+    --texto: #e9ecef;
+    --texto-suave: #b0b0b0;
+    --link: #8ab4f8;
+    --erro: #ff8a80;
+    --destaque-fundo: #1e3324;
+    --titulo-fundo: #1d4250;
+    --acento: #e39bd3;
+    --foco: #e39bd3;
+    --borda: #444444;
+}
+
+:root[data-tema="alto-contraste"] {
+    color-scheme: dark;
+    --fundo: #000000;
+    --texto: #ffffff;
+    --texto-suave: #ffffff;
+    --link: #ffff00;
+    --erro: #ffb3b3;
+    --destaque-fundo: #000000;
+    --titulo-fundo: #000000;
+    --acento: #ffff00;
+    --foco: #ffff00;
+    --borda: #ffffff;
+}
+
+/* ===== Base ===== */
+body {
+    background: var(--fundo);
+    color: var(--texto);
+}
+
+a {
+    color: var(--link);
+}
+
+/* Foco sempre visível no teclado, com a cor de foco do tema */
+:focus-visible {
+    outline: 3px solid var(--foco);
+    outline-offset: 2px;
+}
+
+/* No alto contraste, links sempre sublinhados e campos com borda branca */
+[data-tema="alto-contraste"] a {
+    text-decoration: underline;
+}
+
+[data-tema="alto-contraste"] input,
+[data-tema="alto-contraste"] select,
+[data-tema="alto-contraste"] button {
+    border: 2px solid var(--borda);
+}
+
+/* ===== Seletor de tema ===== */
+.temas {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin: 8px 0;
+}
+
+.temas button {
+    padding: 4px 10px;
+    background: var(--fundo);
+    color: var(--texto);
+    border: 1px solid var(--borda);
+    border-radius: 4px;
+}
+
+.temas button[aria-pressed="true"] {
+    border: 2px solid var(--acento);
+    font-weight: bold;
+}
+
+/* Link "Pular para o conteúdo": escondido até receber o foco do teclado */
+.pular-conteudo {
+    position: absolute;
+    left: -9999px;
+}
+
+.pular-conteudo:focus {
+    left: 8px;
+    top: 8px;
+    padding: 8px 12px;
+    background: var(--fundo);
+    border: 2px solid var(--acento);
+    z-index: 10;
+}
+
+#app:focus {
+    outline: none;
+}
+
+footer {
+    margin-top: 24px;
+    padding: 12px 0;
+    border-top: 1px solid var(--borda);
+}
+
 nav a {
     margin-right: 12px;
     padding: 8px 8px;
@@ -5,8 +143,13 @@ nav a {
 }
 
 nav a.ativo {
-    background: #eef7ee;
-    border-bottom: 2px solid rgb(128, 0, 102);
+    background: var(--destaque-fundo);
+    border-bottom: 2px solid var(--acento);
+}
+
+/* Título da página "Quem somos" */
+.titulo-destaque {
+    background: var(--titulo-fundo);
 }
 
 #missao article {
@@ -15,11 +158,25 @@ nav a.ativo {
 }
 
 #missao article.ativo {
-    background: #eef7ee;
-    border-left: 4px solid green;
+    background: var(--destaque-fundo);
+    border-left: 4px solid var(--acento);
 }
 
 #cadastro label {
     display: block;
     margin-top: 8px;
+}
+
+#cadastro .dica {
+    display: block;
+    color: var(--texto-suave);
+}
+
+#cadastro .erro {
+    display: block;
+    color: var(--erro);
+}
+
+#cadastro [aria-invalid="true"] {
+    border: 2px solid var(--erro);
 }
