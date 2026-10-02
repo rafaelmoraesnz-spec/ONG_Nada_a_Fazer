@@ -1,6 +1,8 @@
 # ONG Nada a fazer
 
-Site institucional da ONG **Nada a fazer** (Campinas/SP), feito como uma *Single Page Application* (SPA) em HTML, CSS e JavaScript puro, sem framework e sem etapa de build.
+Site institucional da ONG **Nada a fazer** (Campinas/SP), feito como uma *Single Page Application* (SPA) em HTML, CSS e JavaScript puro, sem framework, com *build* de produção pelo Vite.
+
+**Site publicado:** <https://rafaelmoraesnz-spec.github.io/ONG_Nada_a_Fazer/>
 
 ## Funcionalidades
 
@@ -70,6 +72,18 @@ A pasta `dist/` não é versionada (está no `.gitignore`), porque é gerada a c
 
 O projeto ainda não tem testes automatizados. Antes de cada merge, a verificação é manual, seguindo a checklist do [CONTRIBUTING.md](CONTRIBUTING.md#antes-de-mesclar).
 
+## Deploy
+
+O site é publicado no **GitHub Pages** pelo GitHub Actions ([`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)):
+
+1. A cada *push* na `main` (ou seja, a cada release ou hotfix do GitFlow), o workflow é disparado.
+2. Ele instala as dependências (`npm ci`) e gera o build (`npm run build`).
+3. A pasta `dist/` é publicada em <https://rafaelmoraesnz-spec.github.io/ONG_Nada_a_Fazer/>.
+
+O `base: './'` no `vite.config.js` faz o site funcionar dentro da pasta `/ONG_Nada_a_Fazer/`. Como as rotas usam `#`, não é preciso configuração extra no servidor para a navegação funcionar.
+
+O deploy também pode ser disparado manualmente na aba **Actions** do repositório (*Run workflow*).
+
 ## Estrutura do projeto
 
 ```
@@ -79,7 +93,9 @@ O projeto ainda não tem testes automatizados. Antes de cada merge, a verificaç
 ├── style.css         # Estilos do menu, da missão e do formulário
 ├── cadastro.html     # Versão isolada e anterior do formulário (referência)
 ├── imagens/
-│   └── nada.jpg      # Imagem da página "Quem somos"
+│   └── nada-320/640  # Imagem da página "Quem somos" em WebP e JPEG (320 e 640 px)
+├── .github/workflows/
+│   └── deploy.yml    # Build e deploy automático no GitHub Pages
 ├── package.json      # Scripts (dev, build, preview) e dependências
 ├── vite.config.js    # Configuração do build e da minificação
 ├── dist/             # Build de produção (gerado, fora do Git)

@@ -20,6 +20,9 @@ function minificarHtml() {
 }
 
 export default defineConfig({
+    // Caminhos relativos: o site funciona em qualquer pasta,
+    // como https://rafaelmoraesnz-spec.github.io/ONG_Nada_a_Fazer/
+    base: './',
     plugins: [minificarHtml()],
     server: { port: 8123 },
     preview: { port: 8123 },
