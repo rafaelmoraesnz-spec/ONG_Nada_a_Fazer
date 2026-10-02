@@ -48,3 +48,8 @@ nav a.ativo {
     display: block;
     margin-top: 8px;
 }
+
+#cadastro .dica {
+    display: block;
+    color: #555;
+}

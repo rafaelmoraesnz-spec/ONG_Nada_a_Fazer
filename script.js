@@ -117,26 +117,42 @@ app.addEventListener('submit', (evento) => {
     // Apaga as mensagens de erro antigas
     form.querySelectorAll('.erro').forEach(msg => msg.remove());
 
-    let temErro = false;
+    let primeiroErro = null;
 
     // Confere cada campo
     form.querySelectorAll('input').forEach(campo => {
+        // Descrição original do campo (dica de formato), sem erros anteriores
+        const dica = campo.dataset.dica ?? campo.getAttribute('aria-describedby') ?? '';
+        campo.dataset.dica = dica;
+
         if (!campo.checkValidity()) {
-            temErro = true;
+            primeiroErro ??= campo;
             campo.style.border = '2px solid red';
 
             const msg = document.createElement('small');
             msg.className = 'erro';
+            msg.id = `erro-${campo.id}`;
             msg.style.color = 'red';
             msg.textContent = campo.value === '' ? 'Campo obrigatório' : 'Formato inválido';
             campo.after(msg);
+
+            // Marca o campo como inválido e liga a mensagem de erro a ele
+            campo.setAttribute('aria-invalid', 'true');
+            campo.setAttribute('aria-describedby', `${msg.id} ${dica}`.trim());
         } else {
             campo.style.border = '';
+            campo.removeAttribute('aria-invalid');
+            if (dica) campo.setAttribute('aria-describedby', dica);
+            else campo.removeAttribute('aria-describedby');
         }
     });
 
 
-    if (temErro) return;
+    // Leva o foco ao primeiro campo com erro; o leitor de tela lê a mensagem ligada a ele
+    if (primeiroErro) {
+        primeiroErro.focus();
+        return;
+    }
 
     const dados = Object.fromEntries(new FormData(form));
     console.log('Cadastro enviado:', dados);
@@ -145,7 +161,9 @@ app.addEventListener('submit', (evento) => {
     localStorage.setItem('usuario', dados.nome);
     localStorage.setItem('preferencias', JSON.stringify({ cor: dados.cor }));
 
+    // role="status" faz o leitor de tela anunciar a confirmação
     const aviso = document.createElement('p');
+    aviso.setAttribute('role', 'status');
     aviso.textContent = `Obrigado, ${dados.nome}! Cadastro recebido.`;
     form.replaceWith(aviso);
 });
