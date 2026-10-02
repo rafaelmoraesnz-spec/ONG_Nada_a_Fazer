@@ -21,18 +21,54 @@ Site institucional da ONG **Nada a fazer** (Campinas/SP), feito como uma *Single
 | CSS3 | Estilos próprios em `style.css` |
 | [Bootstrap 5.3](https://getbootstrap.com/) | Estilos base, carregados via CDN |
 | JavaScript (ES6+) | Roteamento, manipulação do DOM, validação e `localStorage` |
+| [Vite 8](https://vite.dev/) | Servidor de desenvolvimento e *build* de produção minificado |
+
+## Pré-requisitos
+
+- [Git](https://git-scm.com/)
+- [Node.js](https://nodejs.org/) 20 ou superior (já inclui o `npm`)
+- Um navegador atualizado
+
+## Instalação
+
+```bash
+git clone https://github.com/rafaelmoraesnz-spec/ONG_Nada_a_Fazer.git
+cd ONG_Nada_a_Fazer
+npm install
+```
+
+O `npm install` instala as dependências de desenvolvimento listadas no `package.json`: `vite` e `html-minifier-terser`.
 
 ## Como executar
 
-O projeto não tem dependências para instalar. Como as páginas são montadas a partir de `<template>`, use um servidor HTTP local em vez de abrir o arquivo direto:
+| Comando | O que faz |
+|---|---|
+| `npm run dev` | Abre o site em modo de desenvolvimento em <http://localhost:8123>, recarregando a cada alteração |
+| `npm run build` | Gera a versão de produção minificada na pasta `dist/` |
+| `npm run preview` | Serve a pasta `dist/` em <http://localhost:8123> para conferir o *build* |
 
-```bash
-python -m http.server 8123
-```
+## Build de produção
 
-Depois acesse <http://localhost:8123>.
+O *bundler* é o **Vite**, configurado em `vite.config.js`:
 
-Outra opção é a extensão **Live Server** do VS Code.
+- **JavaScript:** minificado pelo Vite (Oxc). Remove espaços, comentários e encurta nomes de variáveis.
+- **CSS:** minificado pelo Vite (Lightning CSS).
+- **HTML:** o Vite não minifica HTML. Um plugin próprio no `vite.config.js` usa o `html-minifier-terser` para remover espaços, quebras de linha e comentários do `index.html`.
+- **Cache:** os arquivos gerados em `dist/assets/` recebem um *hash* no nome (`index-BJbRTBxG.js`), então o navegador sempre baixa a versão nova depois de um deploy.
+
+Resultado do *build* da versão 1.2.0:
+
+| Arquivo | Original | Minificado | Redução |
+|---|---|---|---|
+| `index.html` | 5,9 kB | 4,1 kB | 29% |
+| `style.css` | 3,8 kB | 2,5 kB | 35% |
+| `script.js` | 7,4 kB | 4,2 kB | 43% |
+
+A pasta `dist/` não é versionada (está no `.gitignore`), porque é gerada a cada *build*.
+
+### Testes
+
+O projeto ainda não tem testes automatizados. Antes de cada merge, a verificação é manual, seguindo a checklist do [CONTRIBUTING.md](CONTRIBUTING.md#antes-de-mesclar).
 
 ## Estrutura do projeto
 
@@ -44,6 +80,9 @@ Outra opção é a extensão **Live Server** do VS Code.
 ├── cadastro.html     # Versão isolada e anterior do formulário (referência)
 ├── imagens/
 │   └── nada.jpg      # Imagem da página "Quem somos"
+├── package.json      # Scripts (dev, build, preview) e dependências
+├── vite.config.js    # Configuração do build e da minificação
+├── dist/             # Build de produção (gerado, fora do Git)
 ├── README.md         # Este documento
 ├── CONTRIBUTING.md   # Fluxo de trabalho (GitFlow) e padrão de commits
 └── CHANGELOG.md      # Histórico de versões
